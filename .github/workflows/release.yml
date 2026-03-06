@@ -1,0 +1,48 @@
+name: Module Release (Multi-Tag)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'modules/**'
+
+jobs:
+  detect-and-tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed modules
+        id: changes
+        uses: tj-actions/changed-files@v44
+        with:
+          dir_names: true
+          dir_names_max_depth: 2
+          files: modules/**
+
+      - name: Tag Changed Modules
+        if: steps.changes.outputs.any_changed == 'true'
+        run: |
+          for MODULE_PATH in ${{ steps.changes.outputs.all_changed_files }}; do
+            MODULE_NAME=$(basename $MODULE_PATH)
+
+            LATEST_TAG=$(git tag -l "$MODULE_NAME-v*" --sort=-v:refname | head -n 1)
+
+            if [ -z "$LATEST_TAG" ]; then
+              NEW_TAG="$MODULE_NAME-v1.0.0"
+            else
+              VERSION=$(echo $LATEST_TAG | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+              BASE=$(echo $VERSION | cut -d. -f1-2)
+              PATCH=$(echo $VERSION | cut -d. -f3)
+              NEW_TAG="$MODULE_NAME-v$BASE.$((PATCH + 1))"
+            fi
+
+            echo "Applying tag $NEW_TAG to $MODULE_NAME"
+            git tag $NEW_TAG
+            git push origin $NEW_TAG
+          done
