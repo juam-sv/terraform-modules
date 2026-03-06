@@ -1,0 +1,11 @@
+terraform {
+  source = "git::ssh://git@github.com/juam-sv/terraform-modules.git//{{ .ModulePath }}?ref={{ .Tag }}"
+}
+
+include "root" {
+  path = find_in_parent_folders()
+}
+
+inputs = {
+  # TODO: Fill in required inputs
+}
