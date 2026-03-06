@@ -1,0 +1,24 @@
+terraform {
+  source = "{{ .SourceURL }}"
+}
+
+include "root" {
+  path = find_in_parent_folders("root.hcl")
+}
+
+inputs = {
+  tags = {
+    Environment = "dev"
+    ManagedBy   = "terragrunt"
+  }
+
+  buckets = {
+    example_bucket = {
+      name               = "my-example-bucket"
+      versioning_enabled = true
+      tags = {
+        Purpose = "example"
+      }
+    }
+  }
+}

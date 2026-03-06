@@ -1,0 +1,25 @@
+terraform {
+  source = "{{ .SourceURL }}"
+}
+
+include "root" {
+  path = find_in_parent_folders("root.hcl")
+}
+
+inputs = {
+  tags = {
+    Environment = "dev"
+    ManagedBy   = "terragrunt"
+  }
+
+  queues = {
+    example_queue = {
+      name       = "my-example-queue"
+      fifo       = false
+      create_dlq = true
+      tags = {
+        Purpose = "example"
+      }
+    }
+  }
+}
