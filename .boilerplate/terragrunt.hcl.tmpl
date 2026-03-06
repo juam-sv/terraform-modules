@@ -1,5 +1,5 @@
 terraform {
-  source = "git::ssh://git@github.com/juam-sv/terraform-modules.git//{{ .ModulePath }}?ref={{ .Tag }}"
+  source = "{{ .SourceURL }}"
 }
 
 include "root" {
