@@ -1,0 +1,12 @@
+terraform {
+  source = "{{ .SourceURL }}?ref={{ .ModuleName }}-v{{ .Version }}"
+}
+
+include "root" {
+  path = find_in_parent_folders("root.hcl")
+}
+
+inputs = {
+  # Map of S3 buckets to create
+  buckets = {} # TODO: fill in value
+}
