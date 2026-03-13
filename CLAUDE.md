@@ -52,5 +52,5 @@ Current modules: `s3`, `sqs`, `secret`.
 
 - **Terraform >= 1.9**
 - **Commit messages**: `feat:`, `fix:` prefixes (conventional commits style)
-- **Branch naming**: `feat/`, `fix/` prefixes
+- **Branch naming**: `feat/`, `fix/` prefixes — always create a new branch from `main` for new features or fixes; never commit directly to `main`
 - **Terragrunt integration**: modules are sourced via `git::ssh://` URLs with tag refs; scaffolding templates live in `.boilerplate/`

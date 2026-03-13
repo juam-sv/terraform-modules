@@ -4,6 +4,7 @@ resource "aws_secretsmanager_secret" "this" {
   name                    = each.value.name
   description             = try(each.value.description, null)
   recovery_window_in_days = try(each.value.recovery_window_in_days, 30)
+  kms_key_id              = each.value.kms_key_id
 
   tags = merge(var.tags, try(each.value.tags, {}))
 }
