@@ -15,6 +15,7 @@ variable "queues" {
     visibility_timeout_seconds = optional(number, 30)
     create_dlq                 = optional(bool, false)
     max_receive_count          = optional(number, 3)
+    kms_key_id                 = optional(string)
     tags                       = optional(map(string), {})
   }))
 }

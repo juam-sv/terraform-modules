@@ -1,0 +1,3 @@
+skip-check:
+  - CKV_AWS_144  # S3 cross-region replication — requires destination bucket and IAM role; configured at the infrastructure level, not the module level
+  - CKV2_AWS_62  # S3 event notifications — configured by consumers of the module, not within the module itself

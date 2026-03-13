@@ -11,6 +11,9 @@ on:
     paths:
       - "modules/**"
   workflow_dispatch:
+permissions:
+  contents: read
+  security-events: write
 jobs:
   tflint:
     name: TFLint
@@ -29,7 +32,7 @@ jobs:
         run: |
           for dir in modules/*/; do
             echo "── Linting $dir ──"
-            tflint --chdir="$dir" --enable-plugin=aws
+            tflint --chdir="$dir"
           done
   fmt:
     name: Terraform Format
@@ -66,11 +69,12 @@ jobs:
         with:
           directory: modules/
           framework: terraform
+          config_file: .checkov.yml
           output_format: cli,sarif
           output_file_path: console,results.sarif
           soft_fail: true
       - name: Upload SARIF to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: results.sarif
@@ -89,7 +93,7 @@ jobs:
           exit-code: "0"
           severity: CRITICAL,HIGH,MEDIUM
       - name: Upload Trivy SARIF
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: trivy-results.sarif
@@ -102,11 +106,10 @@ jobs:
         uses: aquasecurity/tfsec-action@v1.0.3
         with:
           working_directory: modules/
-          format: sarif
-          sarif_file: tfsec-results.sarif
           soft_fail: true
+          additional_args: --format sarif --out tfsec-results.sarif
       - name: Upload tfsec SARIF
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: tfsec-results.sarif
