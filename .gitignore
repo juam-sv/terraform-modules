@@ -36,5 +36,11 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-.claude
-.cursor
+# IDE / editor config
+.cursor/
+
+# Claude Code local settings
+.claude/
+
+# Python virtual environment
+.venv/

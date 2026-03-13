@@ -1,0 +1,5 @@
+skip-check:
+  - CKV_AWS_144  # S3 cross-region replication — requires destination bucket and IAM role; configured at the infrastructure level, not the module level
+  - CKV2_AWS_62  # S3 event notifications — configured by consumers of the module, not within the module itself
+  - CKV2_AWS_61  # S3 lifecycle configuration — configured by consumers of the module based on their retention needs
+  - CKV2_AWS_57  # Secrets Manager automatic rotation — requires a Lambda rotation function; configured at the infrastructure level

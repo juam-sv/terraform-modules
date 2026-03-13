@@ -8,14 +8,19 @@ resource "aws_sqs_queue" "this" {
   message_retention_seconds  = try(each.value.message_retention_seconds, 345600)
   visibility_timeout_seconds = try(each.value.visibility_timeout_seconds, 30)
 
+  sqs_managed_sse_enabled = each.value.kms_key_id == null ? true : null
+  kms_master_key_id       = each.value.kms_key_id
+
   tags = merge(var.tags, try(each.value.tags, {}))
 }
 
 resource "aws_sqs_queue" "dlq" {
   for_each = { for k, v in var.queues : k => v if try(v.create_dlq, false) }
 
-  name = try(each.value.fifo, false) ? "${each.value.name}-dlq.fifo" : "${each.value.name}-dlq"
+  name       = try(each.value.fifo, false) ? "${each.value.name}-dlq.fifo" : "${each.value.name}-dlq"
   fifo_queue = try(each.value.fifo, false)
+
+  sqs_managed_sse_enabled = true
 
   tags = merge(var.tags, try(each.value.tags, {}))
 }

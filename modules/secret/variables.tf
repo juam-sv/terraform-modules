@@ -11,6 +11,7 @@ variable "secrets" {
     description             = optional(string)
     recovery_window_in_days = optional(number, 30)
     secret_string           = optional(string)
+    kms_key_id              = optional(string)
     tags                    = optional(map(string), {})
   }))
 }
