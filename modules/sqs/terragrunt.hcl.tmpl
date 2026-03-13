@@ -1,0 +1,12 @@
+terraform {
+  source = "{{ .SourceURL }}?ref={{ .ModuleName }}-v{{ .Version }}"
+}
+
+include "root" {
+  path = find_in_parent_folders("root.hcl")
+}
+
+inputs = {
+  # Map of SQS queues to create
+  queues = {} # TODO: fill in value
+}
