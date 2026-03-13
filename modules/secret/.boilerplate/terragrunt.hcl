@@ -1,5 +1,5 @@
 terraform {
-  source = "{{ .SourceURL }}?ref={{ .ModuleName }}-v{{ .Version }}"
+  source = "{{ .sourceUrl }}?ref={{ .ModuleName }}-v{{ .Version }}"
 }
 
 include "root" {
