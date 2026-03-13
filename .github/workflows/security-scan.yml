@@ -14,6 +14,8 @@ on:
 permissions:
   contents: read
   security-events: write
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 jobs:
   tflint:
     name: TFLint
@@ -92,6 +94,8 @@ jobs:
           output: trivy-results.sarif
           exit-code: "0"
           severity: CRITICAL,HIGH,MEDIUM
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload Trivy SARIF
         uses: github/codeql-action/upload-sarif@v4
         if: always()
